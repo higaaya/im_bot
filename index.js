@@ -1,17 +1,23 @@
-'use strict';
+require('dotenv').config();
 
-var http = require('http');
-var restify = require('restify'); // ローカル開発用のフレームワーク
-var builder = require('botbuilder'); // Bot Builder SDK
-var server = restify.createServer();
+var builder = require('botbuilder');
+var restify = require('restify');
 
-server.listen(3978, function () {
-    console.log('%s listening to %s', server.name, server.url);
+// auth for connector
+
+var connector = new builder.ChatConnector({
+    appId: process.env.MICROSOFT_APP_ID,
+    appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-var connector = new builder.ChatConnector();
-var bot = new builder.UniversalBot(connector);
+// making server
+
+var server = restify.createServer();
+server.listen(process.env.PORT || 3978, function () {
+    console.log('%s listening to %s', server.name, server.url);
+});
 server.post('/api/messages', connector.listen());
+
 
 var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
@@ -33,6 +39,7 @@ function getWeather () {
     });
 }
 
+var bot = new builder.UniversalBot(connector);
 // ユーザーからの全てのメッセージに反応する、ルートダイアログです。
 bot.dialog('/', [
     session => {
