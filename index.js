@@ -26,16 +26,36 @@ bot.dialog('/', function (session) {
 });
 
 //higashiyama add
-var request = require('request');
-var options = {
-  url: 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log',
-  json: true
-};
 
-request.get(options, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
-    console.log(body.name);
-  } else {
-    console.log('error: '+ response.statusCode);
-  }
-});
+var request = require('request');
+
+// URL
+var baseUrl = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
+
+request.post(
+    baseUrl, 
+    { form: { key: 'value', hoge: 'huga'} },
+    function (err, res, body) {
+        if (!err && res.statusCode == 200) {
+            var parse_body = qs.parse(body);
+            console.log(body);
+        } else {
+          console.log(body);
+        }   
+    }   
+);
+
+
+//var request = require('request');
+//var options = {
+//  url: 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log',
+//  json: true
+//};
+
+//request.get(options, function (error, response, body) {
+//  if (!error && response.statusCode == 200) {
+//    console.log(body.name);
+//  } else {
+//    console.log('error: '+ response.statusCode);
+//  }
+//});
