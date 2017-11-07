@@ -38,4 +38,4 @@ request.get(options, function (error, response, body) {
   } else {
     console.log('error: '+ response.statusCode);
   }
-})
+});
