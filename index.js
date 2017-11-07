@@ -14,12 +14,8 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
-var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
-
-
-
-
-
+//var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
+var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 
 // 天気を取得します。
 function getWeather () {
@@ -50,11 +46,11 @@ bot.dialog('/', [
         getWeather().then(
             data => {
                 if (response === '気温') {
-                    session.send('気温は%s°です！', Math.round(data.main.temp));
+                    session.send('気温は%s°です！', data.topics.title);
                 } else if (response === '気圧') {
-                    session.send('気圧は%shpaです！', data.main.pressure);
+                    session.send('気圧は%shpaです！', data.topics.link);
                 } else if (response === '湿度') {
-                    session.send('湿度は%s％です！', data.main.humidity);
+                    session.send('湿度は%s％です！', data.topics.published);
                 }
             },
             err => {
