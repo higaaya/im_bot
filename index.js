@@ -49,7 +49,7 @@ bot.dialog('/', [
                 if (response === '気温') {
                     session.send('気温は%s°です！', data.topics[0].title);
                 } else if (response === '気圧') {
-                    session.send('気圧は%shpaです！', data[0].topics[0].link);
+                    session.send('気圧は%shpaです！', data[0].topics.link);
                 } else if (response === '湿度') {
                     session.send('湿度は%s％です！', data[0].topics[0].published);
                 }
