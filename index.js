@@ -47,11 +47,11 @@ bot.dialog('/', [
         getWeather().then(
             data => {
                 if (response === '気温') {
-                    session.send('気温は%s°です！', data[0].topics.title);
+                    session.send('気温は%s°です！', topics[0].title);
                 } else if (response === '気圧') {
-                    session.send('気圧は%shpaです！', data[0].topics.link);
+                    session.send('気圧は%shpaです！', topics[0].link);
                 } else if (response === '湿度') {
-                    session.send('湿度は%s％です！', data[0].topics.published);
+                    session.send('湿度は%s％です！', topics[0].published);
                 }
             },
             err => {
