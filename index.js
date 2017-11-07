@@ -19,7 +19,7 @@ server.listen(process.env.PORT || 3978, function () {
 server.post('/api/messages', connector.listen());
 
 // making bot
-console.log('hellow!');
+console.log("hellow!");
 
 var bot = new builder.UniversalBot(connector);
 bot.dialog('/', function (session) {
