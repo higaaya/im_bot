@@ -15,7 +15,8 @@ server.post('/api/messages', connector.listen());
 
 var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 //var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
-var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
+//var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
+var URL = 'http://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 
 // 天気を取得します。
 function getWeather () {
