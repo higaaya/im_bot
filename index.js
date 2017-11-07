@@ -32,7 +32,7 @@ var request = require('request');
 // URL
 var baseUrl = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 
-request.post(
+request.get(
     baseUrl, 
     { form: { key: 'value', hoge: 'huga'} },
     function (err, res, body) {
