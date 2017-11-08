@@ -21,11 +21,11 @@ server.post('/api/messages', connector.listen());
 
 var bot = new builder.UniversalBot(connector);
 
-var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
-var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
 
 // 天気を取得します。
-function getWeather () {
+function getWeather (message) {
+	var message = encodeURI(message);
+	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
     return new Promise((resolve, reject) => {
         http.get(URL, (res) => {
             let rawData = '';
@@ -49,19 +49,13 @@ bot.dialog('/', [
     },
     // askダイアログが閉じられると、制御がルートダイアログに戻り下記が実行されます。
     (session, results) => {
-        var response = results.response.entity;
-        getWeather().then(
+        var response = results.response;
+        getWeather(response).then(
             data => {
-                if (response === '気温') {
-                    session.send('気温は%s°です！', Math.round(data.main.temp));
-                } else if (response === '気圧') {
-                    session.send('気圧は%shpaです！', data.main.pressure);
-                } else if (response === '湿度') {
-                    session.send('湿度は%s％です！', data.main.humidity);
-                }
+              session.send('%s回です！', data.records[0].login_failure_count);
             },
             err => {
-                session.send('天気を取得できませんでした！！');
+              session.send('%s', err);
             }
         );
     }
@@ -70,7 +64,7 @@ bot.dialog('/', [
 // askダイアログ
 bot.dialog('/ask', [
     session => {
-        builder.Prompts.choice(session, "こんにちは！何が知りたいですか?", "気温|気圧|湿度");
+        builder.Prompts.text(session, "こんにちは！どのユーザーのログイン失敗回数がしりたいですか？");
     },
     (session, results) => {
         // askダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
