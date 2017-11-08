@@ -22,7 +22,7 @@ var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 function getWeather (message) {
 	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/tutorial/flow?message=' + message;
     return new Promise((resolve, reject) => {
-        http.post(URL, (res) => {
+        http.get(URL, (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
