@@ -1,6 +1,7 @@
 'use strict';
 
 var http = require('http');
+var https = require('https');
 var restify = require('restify'); // ローカル開発用のフレームワーク
 var builder = require('botbuilder'); // Bot Builder SDK
 var server = restify.createServer();
@@ -23,7 +24,8 @@ function getWeather (message) {
 	var message = encodeURI(message);
 	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
     return new Promise((resolve, reject) => {
-        http.get(URL, (res) => {
+//        http.get(URL, (res) => {
+        https.get(URL, (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
