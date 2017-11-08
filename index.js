@@ -27,7 +27,7 @@ function getWeather (message) {
     return new Promise((resolve, reject) => {
 //        http.get(URL, (res) => {
 		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-        https.get(url.parse(URL), (res) => {
+        https.get(URL.parse(URL), (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
