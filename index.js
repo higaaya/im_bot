@@ -17,13 +17,12 @@ var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 //var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
 //var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 //var URL = 'http://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
-//httpsだとエラー
-var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/im-topics-to-log';
 
 // intra-martニュースを取得します。
-function getWeather () {
+function getWeather (message) {
+	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/tutorial/flow?message=' + message;
     return new Promise((resolve, reject) => {
-        http.get(URL, (res) => {
+        http.post(URL, (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
@@ -40,36 +39,30 @@ function getWeather () {
 // ユーザーからの全てのメッセージに反応する、ルートダイアログです。
 bot.dialog('/', [
     session => {
-        // 下部にあるaskダイアログに会話の制御を渡します。
-        session.beginDialog('/ask');
+        // 下部にあるgreetingsダイアログに会話の制御を渡します。
+        session.beginDialog('/greetings');
     },
-    // askダイアログが閉じられると、制御がルートダイアログに戻り下記が実行されます。
+    // greetingsダイアログが閉じられると、制御がルートダイアログに戻り下記が実行されます。
     (session, results) => {
-        var response = results.response.entity;
-        getWeather().then(
+        var response = results.response;
+        getWeather(response).then(
             data => {
-                if (response === 'タイトル') {
-                    session.send('タイトルは%sです！', data.topics[0].title);
-                } else if (response === 'リンク') {
-                    session.send('リンクは%sです！', data.topics[0].link);
-                } else if (response === '日付') {
-                    session.send('日付は%sです！', data.topics[0].published);
-                }
+              session.send('%sを送信しました！', response);
             },
             err => {
-                session.send('intra-martニュースを取得できませんでした！！');
+              session.send('%sを送信できませんでした！', response);
             }
         );
     }
 ]);
 
 // askダイアログ
-bot.dialog('/ask', [
+bot.dialog('/greetings', [
     session => {
-        builder.Prompts.choice(session, "こんにちは！intra-mart最新ニュースの何が知りたいですか?", "タイトル|リンク|日付");
+        builder.Prompts.choice(session, "こんにちは！どのような内容をメール送信しますか？");
     },
     (session, results) => {
-        // askダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
+        // greetingsダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
         session.endDialogWithResult(results);
     }
 ]);
