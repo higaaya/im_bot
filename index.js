@@ -50,7 +50,7 @@ bot.dialog('/', [
               session.send('%sを送信しました！', response);
             },
             err => {
-              session.send('%sを送信できませんでした！', response);
+              session.send('%s', err);
             }
         );
     }
