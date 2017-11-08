@@ -18,6 +18,7 @@ var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 //var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 //var URL = 'http://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/im-topics-to-log';
+
 // 天気を取得します。
 function getWeather () {
     return new Promise((resolve, reject) => {
@@ -45,15 +46,17 @@ bot.dialog('/', [
     (session, results) => {
         var response = results.response.entity;
         getWeather().then(
-        
-    }
-        
-        
             data => {
-					session.send(data);
+                if (response === '気温') {
+                    session.send(data);
+                } else if (response === '気圧') {
+                    session.send('気圧は%shpaです！', data[0].topics.link);
+                } else if (response === '湿度') {
+                    session.send('湿度は%s％です！', data[0].topics[0].published);
+                }
             },
             err => {
-                session.send('データを取得できませんでした！！');
+                session.send('天気を取得できませんでした！！');
             }
         );
     }
