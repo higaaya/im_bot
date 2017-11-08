@@ -22,12 +22,12 @@ var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 // intra-martニュースを取得します。
 function getWeather (message) {
 	var message = encodeURI(message);
-//	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
-	var URL='https://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com:443/imart/logic/api/sample/accounts?user_cd=' + message;
+	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
+//	var URL='https://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
     return new Promise((resolve, reject) => {
-//        http.get(URL, (res) => {
-		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-        https.get(URL.parse(URL), (res) => {
+        http.get(URL, (res) => {
+//		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+//        https.get(URL, (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
