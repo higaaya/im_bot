@@ -50,14 +50,7 @@ bot.dialog('/', [
         
         
             data => {
-				var data1 = data.topics;
-				var title;
-				var i;
-				for (i in data1) {
-					data1 = data[i];
-					title = data1.title;
-					session.send('タイトルは%sです！', title);
-				}
+					session.send(data);
             },
             err => {
                 session.send('データを取得できませんでした！！');
