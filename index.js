@@ -59,7 +59,7 @@ bot.dialog('/', [
 // askダイアログ
 bot.dialog('/greetings', [
     session => {
-        builder.Prompts.choice(session, "こんにちは！どのような内容をメール送信しますか？");
+        builder.Prompts.text(session, "こんにちは！どのような内容をメール送信しますか？");
     },
     (session, results) => {
         // greetingsダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
