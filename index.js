@@ -17,7 +17,7 @@ var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 //var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
 //var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 //var URL = 'http://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
-var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/im-topics-to-log';
+var URL='https://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/im-topics-to-log';
 
 // intra-martニュースを取得します。
 function getWeather () {
