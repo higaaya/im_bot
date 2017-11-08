@@ -1,8 +1,7 @@
-'use strict';
 
 var http = require('http');
 var https = require('https');
-var restify = require('restify'); // ローカル開発用のフレームワーク
+//var restify = require('restify'); // ローカル開発用のフレームワーク
 var builder = require('botbuilder'); // Bot Builder SDK
 var server = restify.createServer();
 
