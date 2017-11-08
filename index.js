@@ -1,7 +1,7 @@
+'use strict';
 
 var http = require('http');
-var https = require('https');
-//var restify = require('restify'); // ローカル開発用のフレームワーク
+var restify = require('restify'); // ローカル開発用のフレームワーク
 var builder = require('botbuilder'); // Bot Builder SDK
 var server = restify.createServer();
 
@@ -14,19 +14,12 @@ var bot = new builder.UniversalBot(connector);
 server.post('/api/messages', connector.listen());
 
 var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
-//var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
-//var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
-//var URL = 'http://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
+var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
 
-// intra-martニュースを取得します。
-function getWeather (message) {
-	var message = encodeURI(message);
-	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
-//	var URL='https://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
+// 天気を取得します。
+function getWeather () {
     return new Promise((resolve, reject) => {
         http.get(URL, (res) => {
-//		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-//        https.get(URL, (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
@@ -43,30 +36,36 @@ function getWeather (message) {
 // ユーザーからの全てのメッセージに反応する、ルートダイアログです。
 bot.dialog('/', [
     session => {
-        // 下部にあるgreetingsダイアログに会話の制御を渡します。
-        session.beginDialog('/greetings');
+        // 下部にあるaskダイアログに会話の制御を渡します。
+        session.beginDialog('/ask');
     },
-    // greetingsダイアログが閉じられると、制御がルートダイアログに戻り下記が実行されます。
+    // askダイアログが閉じられると、制御がルートダイアログに戻り下記が実行されます。
     (session, results) => {
-        var response = results.response;
-        getWeather(response).then(
+        var response = results.response.entity;
+        getWeather().then(
             data => {
-              session.send('%s回です！', data.records[0].login_failure_count);
+                if (response === '気温') {
+                    session.send('気温は%s°です！', Math.round(data.main.temp));
+                } else if (response === '気圧') {
+                    session.send('気圧は%shpaです！', data.main.pressure);
+                } else if (response === '湿度') {
+                    session.send('湿度は%s％です！', data.main.humidity);
+                }
             },
             err => {
-              session.send('%s', err);
+                session.send('天気を取得できませんでした！！');
             }
         );
     }
 ]);
 
 // askダイアログ
-bot.dialog('/greetings', [
+bot.dialog('/ask', [
     session => {
-        builder.Prompts.text(session, "こんにちは！どのユーザーのログイン失敗回数がしりたいですか？");
+        builder.Prompts.choice(session, "こんにちは！何が知りたいですか?", "気温|気圧|湿度");
     },
     (session, results) => {
-        // greetingsダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
+        // askダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
         session.endDialogWithResult(results);
     }
 ]);
