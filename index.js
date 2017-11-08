@@ -47,16 +47,16 @@ bot.dialog('/', [
         var response = results.response.entity;
         getWeather().then(
             data => {
-                if (response === '気温') {
-                    session.send(data);
-                } else if (response === '気圧') {
-                    session.send('気圧は%shpaです！', data.topics[0].published);
+                if (response === 'タイトル') {
+                    session.send('タイトルは%sです！', data.topics[0].title);
+                } else if (response === 'リンク') {
+                    session.send('リンクは%sです！', data.topics[0].link);
                 } else if (response === '湿度') {
-                    session.send('湿度は%s％です！', data[0].topics[0].published);
+                    session.send('日付は%sです！', data.topics[0].published);
                 }
             },
             err => {
-                session.send('天気を取得できませんでした！！');
+                session.send('intra-martニュースを取得できませんでした！！');
             }
         );
     }
@@ -65,7 +65,7 @@ bot.dialog('/', [
 // askダイアログ
 bot.dialog('/ask', [
     session => {
-        builder.Prompts.choice(session, "こんにちは！何が知りたいですか?", "気温|気圧|湿度");
+        builder.Prompts.choice(session, "こんにちは！intra-mart最新ニュースの何が知りたいですか?", "タイトル|リンク|日付");
     },
     (session, results) => {
         // askダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
