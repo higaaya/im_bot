@@ -3,6 +3,7 @@ require('dotenv').config();
 var builder = require('botbuilder');
 var restify = require('restify');
 var http = require('http');
+var https = require('https');
 
 // auth for connector
 
@@ -25,9 +26,10 @@ var bot = new builder.UniversalBot(connector);
 // 天気を取得します。
 function getWeather (message) {
 	var message = encodeURI(message);
-	var URL='http://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
+	var URL='https://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
     return new Promise((resolve, reject) => {
-        http.get(URL, (res) => {
+		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+        https.get(URL, (res) => {
             let rawData = '';
             res.on('data', chunk => {
                 rawData += chunk;
