@@ -48,7 +48,7 @@ bot.dialog('/', [
         var response = results.response;
         getWeather(response).then(
             data => {
-              session.send('%s回です！', data.records.login_failure_count);
+              session.send('%s回です！', data.records[0].login_failure_count);
             },
             err => {
               session.send('%s', err);
@@ -60,7 +60,7 @@ bot.dialog('/', [
 // askダイアログ
 bot.dialog('/greetings', [
     session => {
-        builder.Prompts.text(session, "こんにちは！どのユーザーの部署が知りたいログイン失敗回数ですか？");
+        builder.Prompts.text(session, "こんにちは！どのユーザーのログイン失敗回数がしりたいですか？");
     },
     (session, results) => {
         // greetingsダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
