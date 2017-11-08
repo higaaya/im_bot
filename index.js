@@ -18,6 +18,8 @@ server.listen(process.env.PORT || 3978, function () {
 });
 server.post('/api/messages', connector.listen());
 
+var bot = new builder.UniversalBot(connector);
+
 var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 var URL = 'http://api.openweathermap.org/data/2.5/weather?q=Tokyo,JP&units=metric&appid=' + API_KEY;
 
