@@ -48,7 +48,7 @@ bot.dialog('/', [
         var response = results.response;
         getWeather(response).then(
             data => {
-              session.send('%s回です！', data.);
+              session.send('%s回です！', data.records.login_failure_count);
             },
             err => {
               session.send('%s', err);
