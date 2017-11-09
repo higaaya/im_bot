@@ -26,7 +26,7 @@ var bot = new builder.UniversalBot(connector);
 // 天気を取得します。
 function getWeather (message) {
 	var message = encodeURI(message);
-	var URL='https://ec2-13-115-215-14.ap-northeast-1.compute.amazonaws.com/imart/logic/api/sample/accounts?user_cd=' + message;
+	var URL='https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/accounts?user_cd=' + message;
     return new Promise((resolve, reject) => {
 		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
         https.get(URL, (res) => {
