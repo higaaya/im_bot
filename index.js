@@ -2,7 +2,6 @@ require('dotenv').config();
 
 var builder = require('botbuilder');
 var restify = require('restify');
-var http = require('http');
 var https = require('https');
 
 // auth for connector
@@ -23,8 +22,8 @@ server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector);
 
 
-// 天気を取得します。
-function getWeather (message) {
+// ユーザーのアカウント情報を取得します。
+function getUserAccount (message) {
 	var message = encodeURI(message);
 	var URL='https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/accounts?user_cd=' + message;
     return new Promise((resolve, reject) => {
@@ -52,7 +51,7 @@ bot.dialog('/', [
     // askダイアログが閉じられると、制御がルートダイアログに戻り下記が実行されます。
     (session, results) => {
         var response = results.response;
-        getWeather(response).then(
+        getUserAccount(response).then(
             data => {
               session.send('%s回です！', data.records[0].login_failure_count);
             },
@@ -66,7 +65,7 @@ bot.dialog('/', [
 // askダイアログ
 bot.dialog('/ask', [
     session => {
-        builder.Prompts.text(session, "こんにちは！どのユーザーのログイン失敗回数がしりたいですか？");
+        builder.Prompts.text(session, "こんにちは！どのユーザーのログイン失敗回数が知りたいですか？");
     },
     (session, results) => {
         // askダイアログを閉じ、ルートダイアログにユーザーからの返答データを渡します。
