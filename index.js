@@ -41,6 +41,7 @@ function getUnprocessActvMatterNodeList (message) {
 	};
 
     return new Promise((resolve, reject) => {
+		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; //https:自己証明書のとき必要？？
 		request.post(options, function(error, response, body){
 			if (!error && response.statusCode == 200) {
 				console.log(body);
