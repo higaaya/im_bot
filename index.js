@@ -3,6 +3,8 @@ require('dotenv').config();
 var builder = require('botbuilder');
 var restify = require('restify');
 var request = require('request');
+var http = require('http');
+var https = require('https');
 var connector = new builder.ChatConnector({
 	appId: process.env.MICROSOFT_APP_ID,
 	appPassword: process.env.MICROSOFT_APP_PASSWORD
@@ -16,6 +18,23 @@ var bot = new builder.UniversalBot(connector);
 
 // 未処理一覧を取得します。
 function getUnprocessActvMatterNodeList (message) {
+
+	process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; //https:自己証明書のとき必要？？
+
+	var URL = "https://hgsym-iap.demo-mbp.com/imart/oauth/authorize?response_type=code&client_id=499a9a8d-71ee-4656-bdcf-95f7097efbeb&redirect_uri=https://becksdemo2.herokuapp.com/callback";
+	console.log(URL);
+	var req = https.get(URL, function(res) {
+		// output response body
+		res.setEncoding('utf8');
+		res.on('data', function(str) {
+			console.log(str);
+		});
+	});
+	// error handler
+	req.on('error', function(err) {
+		console.log("Error: " + err.message);
+	});
+
 
 	let options = {
 //		url: 'http://localhost:8081/imart/api/forma/imw/selectUnprocessActvMatterNodeList',
@@ -43,7 +62,6 @@ function getUnprocessActvMatterNodeList (message) {
 	};
 
     return new Promise((resolve, reject) => {
-		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; //https:自己証明書のとき必要？？
 		request.post(options, function(error, response, body){
 			if (!error && response.statusCode == 200) {
 				console.log(body);
