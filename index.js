@@ -4,17 +4,17 @@ var builder = require('botbuilder');
 var restify = require('restify');
 var http = require('http');
 var https = require('https');
-var server = restify.createServer();
 
-server.listen(3978, function () {
-	console.log('%s listening to %s', server.name, server.url);
-});
 var connector = new builder.ChatConnector({
 	appId: process.env.MICROSOFT_APP_ID,
 	appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
-var bot = new builder.UniversalBot(connector);
+var server = restify.createServer();
+server.listen(process.env.PORT || 3978, function () {
+    console.log('%s listening to %s', server.name, server.url);
+});
 server.post('/api/messages', connector.listen());
+var bot = new builder.UniversalBot(connector);
 
 
 // ユーザーアカウント情報を取得します。
