@@ -14,14 +14,13 @@ server.listen(process.env.PORT || 3978, function () {
 server.post('/api/messages', connector.listen());
 var bot = new builder.UniversalBot(connector);
 
-var API_KEY = 'f3502d594b68a566f92d483013bc6aa0';
 var URL = 'https://hgsym-iap.demo-mbp.com/imart/logic/api/sample/im-topics-to-log';
 
 // intra-martニュースを取得します。
 function getWeather () {
     return new Promise((resolve, reject) => {
 		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'; //https:自己証明書のとき必要？？
-		http.get(URL, (res) => {
+		https.get(URL, (res) => {
 			let rawData = '';
 			res.on('data', chunk => {
 				rawData += chunk;
