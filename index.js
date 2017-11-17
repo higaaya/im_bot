@@ -2,7 +2,7 @@
 
 var builder = require('botbuilder'); // Bot Builder SDK
 var restify = require('restify'); // ローカル開発用のフレームワーク
-var http = require('http');
+var https = require('https');
 var connector = new builder.ChatConnector({
 	appId: process.env.MICROSOFT_APP_ID,
 	appPassword: process.env.MICROSOFT_APP_PASSWORD
